@@ -10,7 +10,7 @@
  * @param {number} quantity of product in stock
  * @param {[]} images array of  of product
  */
-var Product = function (
+function Product (
     ID,
     name,
     description,
@@ -36,6 +36,7 @@ var Product = function (
         (this.images = images),
         //getters
         (this.getID = () => this.ID),
+        this.getName = () => this.name,
         (this.getDescription = () => this.description),
         (this.getPrice = () => this.price),
         (this.getBrand = () => this.brand),
@@ -47,6 +48,7 @@ var Product = function (
         (this.getImages = () => this.images),
         //setters
         (this.setID = (ID) => (this.ID = ID)),
+        this.setName = (name) => this.name=name,
         (this.setDescription = (description) => (this.description = description)),
         (this.setPrice = (price) => (this.price = price)),
         (this.setBrand = (brand) => (this.brand = brand)),
@@ -61,7 +63,7 @@ var Product = function (
         });
     this.getImage = (param) =>
         this.images.includes(param)
-            ? this.images.find((image) => image === pram)
+            ? this.images.find((image) => image === param)
             : this.images[0];
     this.addSize = function (size) {
         this.sizes.push(size);
@@ -92,7 +94,7 @@ var Product = function (
         return sum / this.reviews.length;
     };
 };
-var Rewiews = function (ID, author, date, comment, rating) {
+function Rewiews(ID, author, date, comment, rating) {
     (this.ID = ID),
         (this.author = author),
         (this.date = date),
@@ -100,7 +102,7 @@ var Rewiews = function (ID, author, date, comment, rating) {
         (this.rating = rating);
 };
 
-var searchProducts = function (products, search) {
+function searchProducts(products, search) {
     var sum = [];
     products.forEach((el) =>
         el.name.includes(search) || el.description.includes(search)
@@ -109,31 +111,33 @@ var searchProducts = function (products, search) {
     ); // "" It is needed because It needs some aruments after :
     return sum;
 };
-var sortProducts = function (products, sortRule) {
-    typeof sortRule === "string"
-        ? products.sort((a, b) => a[sortRule].localeCompare(b[sortRule]))
-        : products.sort((a, b) => a[sortRule] - b[sortRule]);
+function sortProducts(products, sortRule) {
+    if(  sortRule === "ID"|| sortRule === "price" ||sortRule === "activeSize"|| sortRule ===  "quantity"){
+        products.sort((a, b) => a[sortRule] - b[sortRule]);    
+    }else{
+        products.sort((a, b) => a[sortRule].localeCompare(b[sortRule]))
+    }
 };
-var reviews1 = new Rewiews(0, "Ivan", new Date(), "hyita.I give it a 1", {
+let reviews1 = new Rewiews(0, "Ivan", new Date(), "hyita.I give it a 1", {
     service: 1,
     price: 1,
     value: 1,
     quality: 1,
 });
-var reviews2 = new Rewiews(1, "Vadim", new Date(), "super.I give it a 5", {
+let reviews2 = new Rewiews(1, "Vadim", new Date(), "super.I give it a 5", {
     service: 5,
     price: 5,
     value: 5,
     quality: 5,
 });
-var reviews3 = new Rewiews(
+let reviews3 = new Rewiews(
     2,
     "Alina",
     new Date(),
     "SO so I've expected  way better. I give it a 3",
     { service: 3, price: 3, value: 3, quality: 3 }
 );
-var pr = new Product(
+let pr = new Product(
     0,
     "bag",
     "product1",
@@ -146,7 +150,7 @@ var pr = new Product(
     [reviews1, reviews2, reviews3],
     ["1", "2", "3", "4"]
 );
-var pr1 = new Product(
+let pr1 = new Product(
     1,
     "table",
     "product2",
@@ -159,7 +163,7 @@ var pr1 = new Product(
     [reviews1, reviews2, reviews3],
     ["1", "2", "3", "4"]
 );
-var pr2 = new Product(
+let pr2 = new Product(
     2,
     "chair",
     "product3",
@@ -172,7 +176,7 @@ var pr2 = new Product(
     [reviews1, reviews2, reviews3],
     ["1", "2", "3", "4"]
 );
-var pr3 = new Product(
+let pr3 = new Product(
     3,
     "bad",
     "product4",
@@ -204,15 +208,14 @@ var reviews4 = new Rewiews(3, "Dima", new Date(), "Norm", {
 pr.addReview(reviews4);
 pr.deleteReview(0);
 console.log(pr.getAverageRating());
-for (x in pr) {
-    console.log(pr[x]);
-}
+
 pr.setID(6);
 console.log(pr.getImage(1));
 console.log(pr.getID());
 console.log("-------------------------------------");
 var product = [pr, pr1, pr2, pr3];
-//console.log(searchProducts(product,"product"))
-sortProducts(product, "name");
-console.log(product);
-console.log(typeof "name" == "string");
+console.log(searchProducts(product,"product"))
+sortProducts(product, "ID");
+//console.log(product);
+//console.log(typeof "name" == "string");
+console.log(product)
