@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <p>1--------------------------------</p>
+    <div id="first"></div>
+    <div>
+    <button class="button"  onclick="document.getElementById('first').style.display='none';"  >CS</button>
+    <button class="button" onclick="document.getElementById('first').remove();" >JS</button>
+    <button class="button" onclick="document.getElementById('first').classList.add('hidden');">CS+JS</button>
+    </div>
+    <div>
+    <p>2--------------------------------</p>
+    <button class="button"  onclick="document.getElementById('first').classList.toggle('hidden');"  >CS+js2</button>
+</div>
+<div>
+    <p>3--------------------------------</p>
+    <p class="block"></p>
+    <p class="block"></p>
+    <p class="block"></p>
+    <p class="block"></p>
+    <p class="block"></p>
+</div>
+<div>
+     <button class="button"  onclick="hiddenAndShow(document.getElementsByClassName('block'));"  >CS+js2</button>
+    </div>
+    <p>4--------------------------------</p>
+ <div><input type="text" id="input" >
+    <button class="button"  onclick="querySelectorMy(document.getElementById('input').value);"  >Selector</button>
+</div>
+<p>5--------------------------------</p>
+<div><p id="blockYellow" onclick="blockYellow(document.getElementById('blockYellow'));"></p></div>
+<p>6--------------------------------</p>
+<div>
+    <button class="button" onmouseout="hiddenMy(document.getElementById('blockRed'))"
+    onmouseover="hiddenMy(document.getElementById('blockRed'))">red</button>
+    <div><p id="blockRed" class="hidden" ></p></div>
+</div>
+    <script>
+        function hiddenMy(el){
+            console.log(el)
+        el.classList.toggle('hidden')
+        }
+        function hiddenAndShow(array){
+    Array.from(array).map(el1=>el1.classList.toggle("hidden"))
+        }
+        function querySelectorMy(el){
+       document.querySelectorAll(el).forEach(el=>el.classList.toggle('hidden'))
+        }
+        function blockYellow(el){
+            alert("Привіт")
+            el.onclick=function(){
+                el.classList.toggle('hidden')
+            }
+        }
+    </script>
+</body>
+</html>

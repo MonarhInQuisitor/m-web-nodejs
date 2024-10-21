@@ -1,0 +1,14 @@
+{
+  "name": "express.js",
+  "version": "1.0.0",
+  "description": "nope",
+  "main": "express.js",
+  "scripts": {
+    "test": "get"
+  },
+  "author": "Dima",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
