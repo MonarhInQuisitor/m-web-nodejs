@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- 10---------------------------------->
+<html lang="en"  onmousemove="document.getElementById(`label`).innerHTML=`X: ${event.clientX} Y: ${event.clientY}`">
 <head>
     <link rel="stylesheet" href="style.css"> <!-- Link to the CSS file -->
 </head>
@@ -38,23 +39,141 @@
     onmouseover="hiddenMy(document.getElementById('blockRed'))">red</button>
     <div><p id="blockRed" class="hidden" ></p></div>
 </div>
+<p>7--------------------------------</p>
+<div><input type="text"  onfocus="document.getElementById(`greenBlock`).classList.remove(`hidden`)"
+    oninput="document.getElementById(`greenBlock`).classList.add(`hidden`)">
+<p id="greenBlock" class="hidden"></p>
+</div>
+<p>8--------------------------------</p>
+<div>
+    <input type="text" id="link">
+    <button class="button" onclick="openLink(document.getElementById(`link`).value)">image</button>
+    <div id="container"></div>
+</div>
+<p>9--------------------------------</p>
+<div>
+    <textarea name="input" id="textarea"></textarea>
+    <button class="button" onclick="openLinkArr(document.getElementById(`textarea`).value)">textaeea</button>
+    <div id="container1"></div>
+</div>
+<p>10-----11--------------12-------------</p>
+<div class="topRight">
+    <label id="label">x:0 y:0</label>
+    <br>
+    <label id="label1" ></label>
+    <div id="coordinate"></div>
+</div>
+<p>13--------------------------------</p>
+<div>
+    <p id="localStorage" contenteditable="true" oninput="localStorageMy(this)" >text 1</p>
+    <p id="coockie" contenteditable="true" oninput="coockieMy(this)">23</p>
+    <p id="sessionStorage" contenteditable="true" oninput="sessionStorageMy(this)" >text 2</p>
+
+</div>
+<p>14--------------------------------</p>
+<div>
+    <button onscroll="" class="hidden button" id="hiddenBlock" onclick="Up()">Up</button>
+</div>
+<p>15--------------------------------</p>
+<div>
+<div id="out" onclick="outer();">out
+    <div onclick="inner()">in</div></div>
+</div>
+<p>16--------------------------------</p>
+<button class="button" onclick="greyBlockShow(document.getElementById(`greyBlock`))">greyBlock</button>
+<div id="greyBlock" class="hidden" onclick="greyBlockShow(this)"></div>
+<p>17--------------------------------</p>
+<form><input onclick="return false" type="submit" value="GO"></form>
     <script>
+     "use strict"
         function hiddenMy(el){
-            console.log(el)
         el.classList.toggle('hidden')
         }
+
         function hiddenAndShow(array){
     Array.from(array).map(el1=>el1.classList.toggle("hidden"))
         }
+
         function querySelectorMy(el){
        document.querySelectorAll(el).forEach(el=>el.classList.toggle('hidden'))
         }
+
         function blockYellow(el){
             alert("Привіт")
             el.onclick=function(){
                 el.classList.toggle('hidden')
             }
         }
+
+        function openLink(link){
+        let img = document.createElement("img")
+        img.src=link
+        img.alt="photo"
+        document.getElementById("container").appendChild(img)
+        }
+        
+        function openLinkArr(text){
+         text.split("\n").map(el=>{
+         el.trim()
+         let img = document.createElement("img")
+         img.src=el
+         document.getElementById("container1").appendChild(img)
+        })
+        }
+        //11----12////13
+          onload=function(){
+            document.getElementById(`label1`).innerHTML=navigator.language;
+ 
+           navigator.geolocation.getCurrentPosition((position)=>{
+                document.getElementById(`coordinate`).innerHTML = "Ш: " + position.coords.latitude +
+            "<br>Д: " + position.coords.longitude;},
+            ()=>{ document.getElementById(`coordinate`).innerHTML = "has blocked";
+            })
+            
+            document.getElementById("localStorage").innerHTML= localStorage.getItem("localStorage")
+            document.getElementById("coockie").innerHTML=  document.cookie
+            document.getElementById("sessionStorage").innerHTML= sessionStorage.getItem("sessionStoragee")
+          
+        }
+        function localStorageMy(text){
+            localStorage.setItem("localStorage",text.innerHTML)
+        }
+
+       function coockieMy(text){
+        document.cookie= "12= "+text.innerHTML
+       }
+
+            function sessionStorageMy(text){
+                sessionStorage.setItem('sessionStoragee',text.innerHTML)
+            }
+            //14=--------------
+       onscroll=function(){
+            if(scrollY===document.documentElement.getBoundingClientRect().height - innerHeight){
+                document.getElementById(`hiddenBlock`).classList.remove(`hidden`)
+              
+            }
+        }
+        function Up(){     
+  scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+//15------------
+  function inner(){
+    alert(`inner block`); 
+    outer=function(){outer=function(){
+        alert(`outer block`); 
+    }}
+  }
+ function  outer(){
+    alert(`outer block`); 
+  }
+  //16-------------
+  function greyBlockShow(el){
+el.classList.toggle(`hidden`)
+document.body.classList.toggle(`overFlow-hidden`)
+  }
     </script>
 </body>
 </html>
