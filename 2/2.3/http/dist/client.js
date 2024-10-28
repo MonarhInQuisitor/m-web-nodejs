@@ -7,7 +7,7 @@ const http_1 = __importDefault(require("http"));
 const text = 'hello world';
 const time = performance.now();
 let options = {
-    hostname: 'localhost',
+    hostname: 'm-web-nodejs',
     port: 3000,
     method: 'POST',
     headers: {
