@@ -1,6 +1,6 @@
 import http from 'http';
 
-let server = http.createServer().listen(3000,"m-web-nodejs");
+let server = http.createServer().listen(3000);
 
 server.on('request', function (req : any , res : any) {
     let body=""

@@ -3,7 +3,7 @@ import http from 'http';
 
   const time = performance.now();
 let options = {
-    hostname: 'm-web-nodejs',
+    hostname: 'localhost',
     port: 3000,
     method: 'POST',
     headers: {
