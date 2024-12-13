@@ -1,0 +1,28 @@
+{
+  "name": "2.4mysql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "rd /s /q dist && tsc",
+    "start": "node dist/server.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mysql": "github:mysqljs/mysql",
+    "mysql2": "^3.11.5",
+    "session-file-store": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
+    "@types/node": "^22.10.2"
+  }
+}
