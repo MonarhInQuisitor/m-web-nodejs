@@ -52,8 +52,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("login");
         console.log(req.body.login);
         let user = yield dataBase_1.logins.findOne({ login: req.body.login, pass: req.body.pass });
+        console.log(user, "     user");
         if (user) {
+            console.log(req.body.login, 1);
             req.session.user = { login: user.login };
+            console.log(req.session.user);
             res.json({ "ok": true, });
         }
         else {

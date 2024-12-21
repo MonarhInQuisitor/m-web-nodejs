@@ -14,10 +14,15 @@ const dataBase_1 = require("./dataBase");
 const getItems = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("GET");
+        console.log("req.session.user", req.session.user);
         if (!req.session.user) {
+            console.log("GET 1");
             res.json({ "error": "forbidden" });
+            //let todo = await todoes.find({}, { projection: { _id: 0 } }).toArray()
+            //  res.json(`{"items":${JSON.stringify(todo)}}`)
         }
         else {
+            console.log("GET 2");
             let todo = yield dataBase_1.todoes.find({}, { projection: { _id: 0 } }).toArray();
             res.json(`{"items":${JSON.stringify(todo)}}`);
         }

@@ -226,26 +226,6 @@ README:
         <h1 class="logo">Ш<span style="color: #27ae60">++</span></h1>  
     </header>
     <main>
-        <div class="settings">
-            <h3>Настройки приложения:</h2>
-            <label>
-                Api URL:
-                <input type="text" v-model="apiURL">
-            </label>
-            <div>
-                На каком языке бекенд?
-                <button @click="backendLanguage='PHP'" :class="{'selected': backendLanguage === 'PHP'}">PHP</button>
-                <button @click="backendLanguage='JS'"  :class="{'selected': backendLanguage === 'JS'}">JS</button>
-            </div>
-            <div>
-                Версия АПИ
-                <button @click="apiVersion='v1'" :class="{'selected': apiVersion === 'v1'}">v1</button>
-                <button @click="apiVersion='v2'" :class="{'selected': apiVersion === 'v2'}">v2</button>
-            </div>
-            <div>
-                <button @click="getTasks()" class="primary">Поехали</button>
-            </div>
-        </div>
         <div class="wrapper login" v-if="step === 'login'">
             <h3>Доступ к учетной записи</h1>
             <div class="LoginInput">
@@ -316,6 +296,25 @@ README:
     `
         });
 
+
+
+        async function fetchURL() {
+    let cachedURL = localStorage.getItem('apiURL');
+    if (!cachedURL) {
+        const response = await fetch("getUrl");
+        const data = await response.json();
+        cachedURL = data.url + '/api/v2/router';
+        localStorage.setItem('apiURL', cachedURL);
+    }
+    return cachedURL;
+}
+
+
+        (async function (){ 
+             console.time("URL Fetch Time");
+           const url = await fetchURL()
+           console.timeEnd("URL Fetch Time");
+            console.log(url)
         let vue = new Vue({
             el: '#app',
             data: {
@@ -328,24 +327,24 @@ README:
                 ],
                 login: '',
                 pass: '',
-                backendLanguage: 'JS',
-                apiURL: 'http://localhost:3000/api/',
-                apiVersion: 'v2',
+               // backendLanguage: 'JS',
+               // apiURL: 'http://localhost:3000/api/',
+                //URL: 'http://localhost:3000/api/v2/router',
+                URL: url,
+                //apiVersion: 'v2',
                 step: ''
-            },
+            }, 
+           
             computed: {
-                backendSuffix() {
-                    return this.backendLanguage === 'PHP' ? '.php' : '';
-                },
             },
             methods: {
                 getTasks: function () {
-                    const route = this.apiVersion === 'v1' ? '/items' : '/router';
-                    const qs = {action: this.apiVersion === 'v1' ? '' : 'getItems'};
-                    console.log(this.apiURL + this.apiVersion + route + this.backendSuffix+ '?' + new URLSearchParams(qs))
-                fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), { 
+                    const qs = {action: 'getItems'};
+                    console.log(this.URL,"URL")
+                    console.log(this.URL+ '?' + 'action=getItems')
+                fetch(this.URL+ '?' + new URLSearchParams(qs), { 
                         credentials: 'include',
-                        method: this.apiVersion === 'v1' ? 'GET' : 'POST',
+                        method: 'POST',
                     })
                         .then(res => res.json())
                         .then((response) => {
@@ -368,10 +367,9 @@ README:
                 },
                 deleteTask: function (index) {
                     let request = JSON.stringify({ id: index, });
-                    const route = this.apiVersion === 'v1' ? '/items' : '/router';
-                    const qs = {action: this.apiVersion === 'v1' ? '' : 'deleteItem'};
-                    fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
-                        method: this.apiVersion === 'v1' ? 'DELETE' : 'POST',
+                    const qs = {action: 'deleteItem'};
+                    fetch(this.URL + '?' + new URLSearchParams(qs), {
+                        method: 'POST',
                         body: request,
                         credentials: 'include',
                         headers: {
@@ -389,10 +387,9 @@ README:
                 addTask: function () {
                     if (this.new_task.text.trim() !== '') {
                         let request = JSON.stringify({ text: this.new_task.text });
-                        const route = this.apiVersion === 'v1' ? '/items' : '/router';
-                        const qs = {action: this.apiVersion === 'v1' ? '' : 'createItem'};
-                        fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
-                            method: this.apiVersion === 'v1' ? 'POST' : 'POST',
+                        const qs = {action: 'createItem'};
+                        fetch(this.URL + '?' + new URLSearchParams(qs), {
+                            method: 'POST',
                             body: request,
                             credentials: 'include',
                             headers: {
@@ -410,11 +407,10 @@ README:
                     }
                 },
                 updateTask: function (index, id) {
-                    let request = JSON.stringify({ text: this.tasks[index].text, id: id, checked: this.tasks[index].checked });
-                    const route = this.apiVersion === 'v1' ? '/items' : '/router';
-                    const qs = {action: this.apiVersion === 'v1' ? '' : 'editItem'};
-                    fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
-                        method: this.apiVersion === 'v1' ? 'PUT' : 'POST',
+                    let request = JSON.stringify({ text: this.tasks[index].text, id: id, checked: this.tasks[index].checked });;
+                    const qs = {action: 'editItem'};
+                    fetch(this.URL + '?' + new URLSearchParams(qs), {
+                        method: 'POST',
                         body: request,
                         credentials: 'include',
                         headers: {
@@ -448,11 +444,10 @@ README:
                     this.$set(this.tasks[index], 'inputedit', '');
                 },
                 logout() {
-                    const route = this.apiVersion === 'v1' ? '/logout' : '/router';
-                    const qs = {action: this.apiVersion === 'v1' ? '' : 'logout'};
-                    console.log(this.apiURL + this.apiVersion + route+'?' + new URLSearchParams(qs))
-                    fetch(this.apiURL + this.apiVersion + route+'?' + new URLSearchParams(qs), {
-                        method: this.apiVersion === 'v1' ? 'POST' : 'POST',
+                    const qs = {action: 'logout'};
+                    console.log(this.URL+'?' + new URLSearchParams(qs))
+                    fetch(this.URL+'?' + new URLSearchParams(qs), {
+                        method: 'POST',
                         credentials: 'include',
                     }).then(res => res.json())
                         .then((response) => {
@@ -465,10 +460,9 @@ README:
                 logIn() {
                     if (this.login.trim() !== '' && this.pass.trim()) {
                         let params = JSON.stringify({ login: this.login, pass: this.pass });
-                        const route = this.apiVersion === 'v1' ? '/login' : '/router';
-                        const qs = {action: this.apiVersion === 'v1' ? '' : 'login'};
-                        fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
-                            method: this.apiVersion === 'v1' ? 'POST' : 'POST',
+                        const qs = {action: 'login'};
+                        fetch(this.URL + '?' + new URLSearchParams(qs), {
+                            method: 'POST',
                             credentials: 'include',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -493,10 +487,9 @@ README:
                 register() {
                     if (this.login.trim() !== '' && this.pass.trim()) {
                         let params = JSON.stringify({ login: this.login, pass: this.pass });
-                        const route = this.apiVersion === 'v1' ? '/register' : '/router';
-                        const qs = {action: this.apiVersion === 'v1' ? '' : 'register'};
-                        fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
-                            method: this.apiVersion === 'v1' ? 'POST' : 'POST',
+                        const qs = {action: 'register'};
+                        fetch(this.URL+ '?' + new URLSearchParams(qs), {
+                            method: 'POST',
                             body: params,
                             headers: {
                                 'Content-Type': 'application/json'
@@ -513,7 +506,13 @@ README:
                     }
                 },
             },
-        });
+
+            created() {
+        this.getTasks(); 
+    }
+
+
+        });})()
 </script>
 </body>
 </html>

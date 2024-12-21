@@ -16,16 +16,26 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const server = (0, express_1.default)();
 const router_1 = __importDefault(require("./router"));
+const dataBase_1 = require("./dataBase");
 const cors_1 = __importDefault(require("cors"));
 const express_session_1 = __importDefault(require("express-session"));
-const FileStore = require('session-file-store')(express_session_1.default);
-server.use(express_1.default.json(), body_parser_1.default.json(), (0, cors_1.default)(), express_1.default.static('front'), (0, express_session_1.default)({
-    store: new FileStore({}),
-    secret: 'keyboard cat',
-    resave: true,
-    saveUninitialized: true,
-}));
-server.use("/api/v2", router_1.default);
-server.listen(3000, () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("listenning");
-}));
+const PORT = 3000;
+const ngrok_1 = __importDefault(require("ngrok"));
+(function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        const url = yield ngrok_1.default.connect(3000);
+        console.log(url);
+        server.use((0, cors_1.default)({
+            origin: ["http://localhost:3000", url], // Дозволений домен
+            methods: ['GET', 'POST', 'PUT', 'DELETE'], // Дозволені методи
+            allowedHeaders: ['Content-Type', 'Authorization'], // Дозволені заголовки
+            credentials: true, // Дозволяємо передачу куків
+        }));
+        server.get("/getUrl", (req, res) => { res.json({ url: url }); });
+        server.use(express_1.default.json(), body_parser_1.default.json(), express_1.default.static('front'), (0, express_session_1.default)(dataBase_1.sessions));
+        server.use("/api/v2/router", router_1.default);
+        server.listen(PORT, () => __awaiter(this, void 0, void 0, function* () {
+            console.log("listenning");
+        }));
+    });
+})();

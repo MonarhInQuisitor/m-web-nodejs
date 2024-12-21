@@ -7,9 +7,10 @@ const express_1 = __importDefault(require("express"));
 const crud_1 = require("./crud");
 const authorization_1 = require("./authorization");
 const router = express_1.default.Router();
-router.all("/router", (req, res) => {
+router.all('/', (req, res) => {
     console.log("router");
     let action = req.query.action;
+    console.log(action);
     if (action && typeof action === "string") {
         handler[action](req, res);
     }

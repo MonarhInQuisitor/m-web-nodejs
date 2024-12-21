@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logins = exports.todoes = void 0;
+exports.sessions = exports.logins = exports.todoes = void 0;
 const mongodb_1 = require("mongodb");
+const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const client = new mongodb_1.MongoClient('mongodb://127.0.0.1:27017');
 const db = client.db('BaseForLearning');
 const logins = db.collection("client");
@@ -29,3 +33,19 @@ function connectDB() {
     });
 }
 connectDB();
+let sessions = {
+    // store: new FileStore({ path: "./sessions" }),
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: connect_mongo_1.default.create({
+        clientPromise: client.connect(),
+        dbName: 'BaseForLearning',
+        collectionName: 'sessions',
+    }),
+    cookie: {
+        httpOnly: true, // Заборонити доступ до cookie з JS на клієнті
+        secure: process.env.NODE_ENV === 'production', // Для розробки на локальному сервері можна встановити false
+    },
+};
+exports.sessions = sessions;

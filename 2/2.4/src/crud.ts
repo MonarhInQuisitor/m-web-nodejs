@@ -5,11 +5,14 @@ import { todoes } from "./dataBase";
 const getItems = async (req: Request, res: Response) => {
   try {
     console.log("GET")
+    console.log("req.session.user",req.session.user)
     if (!req.session.user) {
-
+      console.log("GET 1")
       res.json({ "error": "forbidden" })
+      //let todo = await todoes.find({}, { projection: { _id: 0 } }).toArray()
+    //  res.json(`{"items":${JSON.stringify(todo)}}`)
     } else {
-
+      console.log("GET 2")
       let todo = await todoes.find({}, { projection: { _id: 0 } }).toArray()
       res.json(`{"items":${JSON.stringify(todo)}}`)
 

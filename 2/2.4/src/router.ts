@@ -5,9 +5,10 @@ import { getItems, createItem, editItem, deleteItem } from "./crud";
 import {login,logout,register} from "./authorization"
 
 const router = express.Router();
-router.all("/router", (req: Request, res: Response) => {
+router.all('/', (req: Request, res: Response) => {
   console.log("router")
   let action = req.query.action
+  console.log(action)
   if (action && typeof action === "string") {
     handler[action](req,res)
   }else{
