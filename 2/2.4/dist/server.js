@@ -21,9 +21,10 @@ const cors_1 = __importDefault(require("cors"));
 const express_session_1 = __importDefault(require("express-session"));
 const PORT = 3000;
 const ngrok_1 = __importDefault(require("ngrok"));
+console.log("init");
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
-        const url = yield ngrok_1.default.connect(3000);
+        const url = yield ngrok_1.default.connect(PORT);
         console.log(url);
         server.use((0, cors_1.default)({
             origin: ["http://localhost:3000", url], // Дозволений домен

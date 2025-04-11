@@ -5,15 +5,15 @@ const db = client.db('BaseForLearning');
 const logins = db.collection("client");
 const todoes = db.collection('tasks');
 
-async function connectDB() {
+(async function () {
   try {
     await client.connect();
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error("MongoDB connection error:", err);
   }
-}
-connectDB()
+})()
+
 
 let sessions = {
   // store: new FileStore({ path: "./sessions" }),
